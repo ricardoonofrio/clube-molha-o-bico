@@ -825,28 +825,79 @@
       const headers = document.querySelectorAll("h2");
       let activeIndex = -1;
       let flipX = 1;
-      
-      // Animate frames
-      let frameIndex = 0;
-      setInterval(() => {
+
+      function updateBirdImage() {
         const isFlying = bird.classList.contains('flying');
-        const frames = bird.querySelectorAll(isFlying ? '.frame-voando' : '.frame-pouso');
         const allFrames = bird.querySelectorAll('.frame');
-        
         allFrames.forEach(f => f.classList.remove('active'));
-        frameIndex = (frameIndex + 1) % 4;
-        if (frames[frameIndex]) {
-          frames[frameIndex].classList.add('active');
+        
+        let targetIndex = activeIndex;
+        if (targetIndex < 0) targetIndex = 0;
+
+        if (isFlying) {
+           let voandoIdx = targetIndex === 0 ? 4 : targetIndex;
+           if(voandoIdx > 4) voandoIdx = 4;
+           const img = bird.querySelector(`.frame-voando[data-idx="${voandoIdx}"]`);
+           if(img) img.classList.add('active');
+        } else {
+           let pousoIdx = targetIndex + 1;
+           if(pousoIdx > 4) pousoIdx = 4;
+           const img = bird.querySelector(`.frame-pouso[data-idx="${pousoIdx}"]`);
+           if(img) img.classList.add('active');
         }
-      }, 120);
+      }
 
       const birdObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            const index = Array.from(headers).indexOf(entry.target);
-            if (index !== -1 && index !== activeIndex) {
-              activeIndex = index;
-              moveBirdTo(index);
+            const h2 = entry.target;
+            const newIndex = Array.from(headers).indexOf(h2);
+            
+            if (activeIndex !== newIndex) {
+              const h2Rect = h2.getBoundingClientRect();
+              const destY = h2Rect.top + window.scrollY - 30; 
+              const destX = h2Rect.left - 100;
+              
+              if (activeIndex !== -1) {
+                const oldH2 = headers[activeIndex];
+                const oldRect = oldH2.getBoundingClientRect();
+                const startX = oldRect.left - 100;
+                const startY = oldRect.top + window.scrollY - 30;
+
+                flipX = destX > startX ? 1 : -1;
+                
+                let dx = destX - startX;
+                let dy = destY - startY;
+                let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+                
+                if (flipX === -1) {
+                  angle = Math.atan2(dy, -dx) * (180 / Math.PI);
+                }
+                angle = Math.max(-40, Math.min(40, angle));
+                
+                const distance = Math.sqrt(dx*dx + dy*dy);
+                const duration = Math.min(1.5, Math.max(0.6, distance / 500));
+                
+                bird.style.transition = `top ${duration}s cubic-bezier(0.25, 1, 0.5, 1), left ${duration}s cubic-bezier(0.25, 1, 0.5, 1), transform ${duration}s cubic-bezier(0.25, 1, 0.5, 1)`;
+                
+                bird.classList.add('flying');
+                bird.style.transform = `rotate(${angle}deg) scaleX(${flipX})`;
+                activeIndex = newIndex;
+                updateBirdImage();
+
+                setTimeout(() => {
+                  bird.classList.remove('flying');
+                  bird.style.transform = `rotate(0deg) scaleX(${flipX})`;
+                  updateBirdImage();
+                }, duration * 1000);
+                
+              } else {
+                activeIndex = newIndex;
+                updateBirdImage();
+              }
+              
+              bird.style.top = destY + "px";
+              bird.style.left = destX + "px";
             }
           }
         });
