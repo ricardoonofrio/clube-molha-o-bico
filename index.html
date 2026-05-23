@@ -856,12 +856,12 @@
             if (activeIndex !== newIndex) {
               const h2Rect = h2.getBoundingClientRect();
               const destY = h2Rect.top + window.scrollY - 30; 
-              const destX = h2Rect.right + 20;
+              const destX = h2Rect.left - 90;
               
               if (activeIndex !== -1) {
                 const oldH2 = headers[activeIndex];
                 const oldRect = oldH2.getBoundingClientRect();
-                const startX = oldRect.right + 20;
+                const startX = oldRect.left - 90;
                 const startY = oldRect.top + window.scrollY - 30;
 
                 flipX = destX > startX ? 1 : -1;
