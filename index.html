@@ -851,7 +851,7 @@
             
             if (activeIndex !== newIndex) {
               const h2Rect = h2.getBoundingClientRect();
-              const isMobile = window.innerWidth <= 560;
+              const isMobile = window.innerWidth <= 900;
               
               const destY = h2Rect.top + window.scrollY - (isMobile ? 80 : 30); 
               const destX = isMobile ? h2Rect.left + (h2Rect.width / 2) - 50 : h2Rect.left - 90;
