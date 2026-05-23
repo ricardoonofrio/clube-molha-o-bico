@@ -856,7 +856,7 @@
                 destElement = h2.previousElementSibling;
               }
               const destRect = destElement.getBoundingClientRect();
-              const destY = destRect.top + window.scrollY - (isMobile ? 80 : 30); 
+              const destY = destRect.top + window.scrollY - (isMobile ? 110 : 30); 
               const destX = isMobile ? destRect.left + (destRect.width / 2) - 50 : destRect.left - 90;
               
               if (activeIndex !== -1) {
@@ -867,7 +867,7 @@
                 }
                 const startRect = startElement.getBoundingClientRect();
                 const startX = isMobile ? startRect.left + (startRect.width / 2) - 50 : startRect.left - 90;
-                const startY = startRect.top + window.scrollY - (isMobile ? 80 : 30);
+                const startY = startRect.top + window.scrollY - (isMobile ? 110 : 30);
 
                 flipX = destX > startX ? 1 : -1;
                 
