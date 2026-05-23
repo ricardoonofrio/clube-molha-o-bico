@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clube Molha o Bico | Clube de Vinho em Vitória/ES</title>
+  <meta name="description" content="Clube Molha o Bico: clube de vinho em Vitória/ES para quem gosta de vinho, boas conversas e experiências leves." />
+  
+  <!-- Open Graph / WhatsApp Sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Clube Molha o Bico | Clube de Vinho em Vitória/ES" />
+  <meta property="og:description" content="Seu clube de vinhos em Vitória/ES, com rótulos selecionados, compras em grupo e experiências para quem não quer ficar de bico seco." />
+  <meta property="og:image" content="https://seusite.com.br/hero-bg.png" />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍷</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #030303;
+      --bg-2: #25051F;
+      --wine: #25051F;
+      --wine-2: #520F43;
+      --gold: #F6A104;
+      --gold-soft: #F6A104;
+      --text: #F8F8F8;
+      --muted: #ddd6dc;
+      --card: rgba(248,248,248,0.06);
+      --border: rgba(248,248,248,0.12);
+      --shadow: 0 24px 80px rgba(0,0,0,0.45);
+      --radius: 28px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    h1, h2, h3, .eyebrow {
+      font-family: 'Playfair Display', serif;
+    }
+    .eyebrow {
+      font-family: 'Inter', sans-serif; /* keep eyebrow sans-serif */
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* Animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 48px 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(82, 15, 67, 0.68), transparent 32%),
+        radial-gradient(circle at 85% 75%, rgba(246, 161, 4, 0.20), transparent 38%),
+        linear-gradient(135deg, #030303 0%, #25051F 55%, #030303 100%);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at center, black, transparent 78%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: 54px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 15px;
+      border: 1px solid rgba(246,161,4,0.28);
+      border-radius: 999px;
+      background: rgba(248,248,248,0.05);
+      color: #F6D28B;
+      font-size: 14px;
+      margin-bottom: 26px;
+      backdrop-filter: blur(10px);
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.32em;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(48px, 7vw, 92px);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      font-weight: 900;
+      margin-bottom: 24px;
+    }
+
+    .hero-text {
+      max-width: 610px;
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 22px);
+      margin-bottom: 32px;
+    }
+
+    .bio-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: -12px 0 30px;
+    }
+
+    .bio-strip span {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(246,161,4,0.24);
+      background: rgba(248,248,248,0.06);
+      color: #F8F8F8;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 54px;
+      padding: 0 24px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-family: 'Inter', sans-serif;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: #F6A104;
+      color: #030303;
+      box-shadow: 0 14px 35px rgba(246,161,4,0.24);
+    }
+
+    .btn-primary:hover {
+      background: #ffb52f;
+    }
+
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,0.26);
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(246,161,4,0.55);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .legal {
+      color: #c8bcc5;
+      font-size: 13px;
+    }
+
+    .hero-card {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 38px;
+      padding: 18px;
+      background: rgba(248,248,248,0.05);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -18px;
+      border-radius: 48px;
+      background: rgba(246,161,4,0.12);
+      filter: blur(35px);
+      z-index: -1;
+    }
+
+    .hero-image {
+      border-radius: 28px;
+      overflow: hidden;
+      background: #030303;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: auto;
+    }
+
+    section {
+      padding: 86px 0;
+    }
+
+    .section-dark {
+      background: var(--bg-2);
+    }
+
+    .section-header {
+      max-width: 780px;
+      margin-bottom: 38px;
+    }
+
+    .section-header.center {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    h2 {
+      font-size: clamp(34px, 4vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .lead {
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      padding: 30px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card);
+      box-shadow: 0 16px 50px rgba(0,0,0,0.22);
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(246,161,4,0.14);
+      color: var(--gold);
+      font-size: 24px;
+      margin-bottom: 18px;
+    }
+
+    .card h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: var(--muted);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .benefits {
+      display: grid;
+      gap: 12px;
+    }
+
+    .benefit {
+      display: flex;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(248,248,248,0.05);
+      color: #F8F8F8;
+    }
+
+    .benefit span {
+      color: var(--gold);
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .step-number {
+      width: 48px;
+      height: 48px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: #F6A104;
+      color: #030303;
+      font-weight: 950;
+      margin-bottom: 22px;
+    }
+
+    /* FAQ Styles */
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 12px;
+      background: var(--card);
+      overflow: hidden;
+    }
+    .faq-question {
+      padding: 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--gold);
+      user-select: none;
+    }
+    .faq-answer {
+      padding: 0 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      color: var(--muted);
+    }
+    .faq-item.active .faq-answer {
+      padding: 0 20px 20px;
+      max-height: 200px;
+    }
+    .faq-icon {
+      transition: transform 0.3s ease;
+    }
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    /* Social Proof Styles */
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .testimonial-card {
+      padding: 24px;
+      border-radius: 20px;
+      background: rgba(246,161,4,0.05);
+      border: 1px solid rgba(246,161,4,0.15);
+      font-style: italic;
+    }
+    .testimonial-author {
+      margin-top: 16px;
+      font-style: normal;
+      font-weight: 700;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testimonial-author img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #25051F;
+    }
+
+    .final-cta {
+      padding: 72px 0 96px;
+    }
+
+    .cta-box {
+      text-align: center;
+      padding: clamp(34px, 6vw, 62px);
+      border-radius: 36px;
+      border: 1px solid rgba(246,161,4,0.24);
+      background:
+        radial-gradient(circle at top left, rgba(246,161,4,0.18), transparent 28%),
+        linear-gradient(135deg, var(--wine-2), var(--wine));
+      box-shadow: var(--shadow);
+    }
+
+    .cta-box p {
+      max-width: 720px;
+      margin: 0 auto 30px;
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    footer {
+      padding: 28px 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: #c8bcc5;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .split {
+        grid-template-columns: 1fr;
+      }
+      .testimonials {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-card {
+        max-width: 560px;
+        margin: 0 auto;
+      }
+
+      .cards,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        width: min(100% - 28px, 1180px);
+      }
+
+      section {
+        padding: 64px 0;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .hero-card {
+        border-radius: 28px;
+        padding: 12px;
+      }
+
+      .hero-image {
+        border-radius: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="hero">
+    <div class="container hero-grid">
+      <div class="fade-in">
+        <div class="badge">📍 Vitória • Espírito Santo</div>
+        <p class="eyebrow">Clube de vinho</p>
+        <h1>Clube Molha o Bico</h1>
+        <p class="hero-text">
+          Seu clube de vinhos em Vitória/ES, com rótulos selecionados, compras em grupo e experiências para quem não quer ficar de bico seco.
+        </p>
+
+        <div class="bio-strip">
+          <span>🍷 Rótulos selecionados</span>
+          <span>📦 Compras em grupo</span>
+          <span>🚚 Consulte retirada</span>
+          <span>📍 Bento Ferreira</span>
+        </div>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://wa.me/5500000000000?text=Ol%C3%A1%2C%20quero%20entrar%20para%20o%20Clube%20Molha%20o%20Bico" target="_blank" rel="noopener">
+            Não fique de bico seco →
+          </a>
+          <a class="btn btn-secondary" href="https://instagram.com/clubemolhaobico" target="_blank" rel="noopener">
+            Ver no Instagram
+          </a>
+        </div>
+
+        <p class="legal">Conteúdo e experiências destinados exclusivamente a maiores de 18 anos.</p>
+      </div>
+
+      <div class="hero-card fade-in delay-2">
+        <div class="hero-image">
+          <img src="hero-bg.png" alt="Clube Molha o Bico" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="eyebrow">A proposta</p>
+        <h2>Vinho de um jeito simples, social e memorável.</h2>
+        <p class="lead">
+          O Clube Molha o Bico nasce em Vitória, no bairro Bento Ferreira, para reunir pessoas que gostam de vinho, boas compras e descobertas de novos rótulos. A proposta é facilitar o acesso a vinhos selecionados por meio de curadoria e compras em grupo.
+        </p>
+      </div>
+
+      <div class="cards">
+        <article class="card fade-in">
+          <div class="icon">🍷</div>
+          <h3>Rótulos selecionados</h3>
+          <p>Seleção de vinhos para quem quer descobrir novos rótulos com praticidade, sem complicação e com bom custo-benefício.</p>
+        </article>
+
+        <article class="card fade-in delay-1">
+          <div class="icon">🤝</div>
+          <h3>Compras em grupo</h3>
+          <p>Compras coletivas para aproveitar melhores oportunidades, dividir descobertas e comprar vinho de forma mais inteligente.</p>
+        </article>
+
+        <article class="card fade-in delay-2">
+          <div class="icon">🎁</div>
+          <h3>Retirada em Vitória</h3>
+          <p>Consulte as opções de retirada em Vitória, com ponto de referência em Bento Ferreira.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-dark">
+    <div class="container split">
+      <div class="fade-in">
+        <p class="eyebrow">Benefícios</p>
+        <h2>Por que entrar para o clube?</h2>
+        <p class="lead">
+          Mais do que comprar vinho, a ideia é participar de uma curadoria local, aproveitar compras em grupo e ter acesso a rótulos selecionados em Vitória/ES.
+        </p>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit fade-in"><span>✓</span> Rótulos selecionados para diferentes ocasiões.</div>
+        <div class="benefit fade-in delay-1"><span>✓</span> Clube local em Vitória, com referência em Bento Ferreira.</div>
+        <div class="benefit fade-in delay-2"><span>✓</span> Compras em grupo para facilitar o acesso a bons vinhos.</div>
+        <div class="benefit fade-in"><span>✓</span> Informações simples para escolher melhor cada rótulo.</div>
+        <div class="benefit fade-in delay-1"><span>✓</span> Consulte condições de retirada e disponibilidade.</div>
+        <div class="benefit fade-in delay-2"><span>✓</span> Não fique de bico seco: acompanhe as novidades do clube.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof Section -->
+  <section>
+    <div class="container">
+      <div class="section-header center fade-in">
+        <p class="eyebrow">A Comunidade</p>
+        <h2>Quem já está molhando o bico</h2>
+        <p class="lead">A melhor parte de descobrir um vinho novo é ter com quem compartilhar.</p>
+      </div>
+      <div class="testimonials">
+        <div class="testimonial-card fade-in">
+          <p>"Finalmente um clube de vinhos sem frescura! As escolhas são ótimas e comprar em grupo faz o preço valer muito a pena."</p>
+          <div class="testimonial-author">
+             <span>🍷 Lucas</span>
+          </div>
+        </div>
+        <div class="testimonial-card fade-in delay-1">
+          <p>"Eu não entendo quase nada de vinho, mas com a curadoria do clube eu sei que sempre vou levar uma garrafa boa pra casa."</p>
+          <div class="testimonial-author">
+             <span>🍷 Marina</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-dark">
+    <div class="container">
+      <div class="section-header center fade-in">
+        <p class="eyebrow">Como funciona</p>
+        <h2>Três passos para começar</h2>
+      </div>
+
+      <div class="steps">
+        <article class="card fade-in">
+          <div class="step-number">1</div>
+          <h3>Entre para a lista</h3>
+          <p>Você chama no WhatsApp ou acompanha o Instagram para receber as novidades do clube.</p>
+        </article>
+
+        <article class="card fade-in delay-1">
+          <div class="step-number">2</div>
+          <h3>Acompanhe os rótulos</h3>
+          <p>Veja os vinhos selecionados, as oportunidades de compra em grupo e as condições disponíveis.</p>
+        </article>
+
+        <article class="card fade-in delay-2">
+          <div class="step-number">3</div>
+          <h3>Molhe o bico com a gente</h3>
+          <p>Consulte a forma de retirada e garanta seus rótulos sem ficar de bico seco.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section>
+    <div class="container faq-container">
+      <div class="section-header center fade-in">
+        <p class="eyebrow">Dúvidas?</p>
+        <h2>Perguntas Frequentes</h2>
+      </div>
+      
+      <div class="faq-item fade-in" onclick="this.classList.toggle('active')">
+        <div class="faq-question">Preciso entender de vinhos para participar? <span class="faq-icon">+</span></div>
+        <div class="faq-answer">De jeito nenhum! A ideia do clube é exatamente facilitar isso. Nós fazemos a curadoria para que você apenas desfrute de bons vinhos sem complicação.</div>
+      </div>
+      <div class="faq-item fade-in" onclick="this.classList.toggle('active')">
+        <div class="faq-question">Tem alguma taxa de mensalidade ou adesão? <span class="faq-icon">+</span></div>
+        <div class="faq-answer">Não! Você só paga pelos vinhos que quiser adquirir nas nossas compras em grupo. Sem amarras.</div>
+      </div>
+      <div class="faq-item fade-in" onclick="this.classList.toggle('active')">
+        <div class="faq-question">Como funciona a retirada em Vitória? <span class="faq-icon">+</span></div>
+        <div class="faq-answer">Nós temos um ponto de referência em Bento Ferreira. Toda vez que você participar de uma compra em grupo, avisaremos quando e onde retirar suas garrafas.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="container">
+      <div class="cta-box fade-in">
+        <h2>A primeira taça começa com uma mensagem.</h2>
+        <p>
+          Fale com o Clube Molha o Bico para consultar rótulos disponíveis, compras em grupo e opções de retirada em Vitória — Bento Ferreira.
+        </p>
+        <div class="cta-row" style="justify-content:center;">
+          <a class="btn btn-primary" href="https://wa.me/5500000000000?text=Ol%C3%A1%2C%20quero%20entrar%20para%20o%20Clube%20Molha%20o%20Bico" target="_blank" rel="noopener">
+            Chamar no WhatsApp
+          </a>
+          <a class="btn btn-secondary" href="https://instagram.com/clubemolhaobico" target="_blank" rel="noopener">
+            Acompanhar no Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container fade-in">
+      © 2026 Clube Molha o Bico • Vitória/ES • Venda e consumo de bebidas alcoólicas somente para maiores de 18 anos.
+    </div>
+  </footer>
+
+  <script>
+    // Intersection Observer for scroll fade-in animations
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: "0px 0px -50px 0px"
+      });
+
+      document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>
