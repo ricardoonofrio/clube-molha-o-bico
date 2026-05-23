@@ -51,7 +51,12 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      overflow-x: clip;
+    }
+
+    .site-wrapper {
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
     }
     
     h1, h2, h3, .eyebrow {
@@ -589,6 +594,7 @@
 </head>
 
 <body>
+  <div class="site-wrapper">
   <div id="flying-bird">
     <div class="bird-inner">
       <!-- Frames de Pouso -->
@@ -951,5 +957,6 @@
       }
     });
   </script>
+  </div>
 </body>
 </html>
