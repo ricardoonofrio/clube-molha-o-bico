@@ -89,27 +89,30 @@
 
     #flying-bird {
       position: absolute;
-      top: -100px;
-      left: -100px;
+      top: -200px;
+      left: -200px;
       z-index: 1000;
-      width: 50px;
-      height: 50px;
+      width: 100px;
+      height: 100px;
       pointer-events: none;
       transition: top 1.2s cubic-bezier(0.25, 1, 0.5, 1), left 1.2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4));
     }
     #flying-bird .bird-inner {
       width: 100%;
       height: 100%;
-      /* Instant flip, no transition for scaleX to prevent squishing */
+      position: relative;
     }
-    /* Hovering effect when landed */
-    @keyframes hoverBird {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-6px); }
+    #flying-bird .frame {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
     }
-    #flying-bird:not(.flying) .bird-inner {
-      animation: hoverBird 2s infinite alternate ease-in-out;
+    #flying-bird .frame.active {
+      opacity: 1;
     }
 
     .hero {
@@ -592,9 +595,17 @@
 <body>
   <div id="flying-bird">
     <div class="bird-inner">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#520F43" d="M 85,50 C 70,40 50,30 30,35 C 45,35 60,45 65,55 C 50,55 35,65 15,70 C 30,65 45,55 60,50 C 70,50 80,50 85,50 Z" />
-      </svg>
+      <!-- Frames de Pouso -->
+      <img src="IMAGENS/pouso%201.png" class="frame frame-pouso active" alt="">
+      <img src="IMAGENS/pouso%202.png" class="frame frame-pouso" alt="">
+      <img src="IMAGENS/pouso%203.png" class="frame frame-pouso" alt="">
+      <img src="IMAGENS/pouso%204.png" class="frame frame-pouso" alt="">
+      
+      <!-- Frames Voando -->
+      <img src="IMAGENS/voando%201.png" class="frame frame-voando" alt="">
+      <img src="IMAGENS/voando%202.png" class="frame frame-voando" alt="">
+      <img src="IMAGENS/voando%203.png" class="frame frame-voando" alt="">
+      <img src="IMAGENS/voando%204.png" class="frame frame-voando" alt="">
     </div>
   </div>
 
@@ -814,6 +825,20 @@
       const headers = document.querySelectorAll("h2");
       let activeIndex = -1;
       let flipX = 1;
+      
+      // Animate frames
+      let frameIndex = 0;
+      setInterval(() => {
+        const isFlying = bird.classList.contains('flying');
+        const frames = bird.querySelectorAll(isFlying ? '.frame-voando' : '.frame-pouso');
+        const allFrames = bird.querySelectorAll('.frame');
+        
+        allFrames.forEach(f => f.classList.remove('active'));
+        frameIndex = (frameIndex + 1) % 4;
+        if (frames[frameIndex]) {
+          frames[frameIndex].classList.add('active');
+        }
+      }, 120);
 
       const birdObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
