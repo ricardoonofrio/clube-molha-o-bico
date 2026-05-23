@@ -92,23 +92,24 @@
       top: -100px;
       left: -100px;
       z-index: 1000;
-      width: 46px;
-      height: 46px;
+      width: 50px;
+      height: 50px;
       pointer-events: none;
-      transition: top 1.2s cubic-bezier(0.25, 1, 0.5, 1), left 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6));
+      transition: top 1.2s cubic-bezier(0.25, 1, 0.5, 1), left 1.2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4));
     }
     #flying-bird .bird-inner {
       width: 100%;
       height: 100%;
-      transition: transform 0.3s ease;
+      /* Instant flip, no transition for scaleX to prevent squishing */
     }
-    #flying-bird.flying .bird-inner {
-      animation: flap 0.3s infinite alternate ease-in-out;
+    /* Hovering effect when landed */
+    @keyframes hoverBird {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-6px); }
     }
-    @keyframes flap {
-      0% { transform: translateY(0) scaleY(1) rotate(0deg); }
-      100% { transform: translateY(-10px) scaleY(0.7) rotate(-15deg); }
+    #flying-bird:not(.flying) .bird-inner {
+      animation: hoverBird 2s infinite alternate ease-in-out;
     }
 
     .hero {
@@ -592,7 +593,7 @@
   <div id="flying-bird">
     <div class="bird-inner">
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#520F43" d="M90.1,28.5c-7.9,8.4-14.7,19.2-22.3,28c-4.9,5.7-10.8,9.7-18.4,11c-6.8,1.2-12.8-1.5-16.7-7.2c-5.7-8.2-13.8-14.5-23.3-18.2c-2.4-0.9-2.8-4.2-0.6-5.5c4.7-2.8 10.2-4.2 15.6-4.5c9.2-0.5 18,3.2 25.1,8.5c2.7,2,5.2,4.8,8.5,4.9c4.8,0.1 8.8-4.1 11.8-7.7c5.9-7.2,11.3-15.1,19-20.7C89.9,16.2,93.4,24.9,90.1,28.5z"/>
+        <path fill="#520F43" d="M 85,50 C 70,40 50,30 30,35 C 45,35 60,45 65,55 C 50,55 35,65 15,70 C 30,65 45,55 60,50 C 70,50 80,50 85,50 Z" />
       </svg>
     </div>
   </div>
@@ -842,14 +843,21 @@
         }
         
         const targetTop = window.scrollY + textRect.top - 20;
-        const currentLeft = parseFloat(bird.style.left) || 0;
+        const currentLeft = parseFloat(bird.style.left) || targetLeft;
+        const currentTop = parseFloat(bird.style.top) || targetTop;
         
-        if (currentLeft !== 0) {
-          if (targetLeft < currentLeft) flipX = -1;
-          else flipX = 1;
-        }
+        const deltaX = targetLeft - currentLeft;
+        const deltaY = targetTop - currentTop;
         
-        bird.style.transform = `scaleX(${flipX})`;
+        if (deltaX < 0) flipX = -1;
+        else if (deltaX > 0) flipX = 1;
+        
+        let angle = Math.atan2(deltaY, Math.abs(deltaX)) * (180 / Math.PI);
+        angle = Math.max(-40, Math.min(40, angle)); // Clamp angle
+        
+        const innerBird = bird.querySelector('.bird-inner');
+        innerBird.style.transform = `scaleX(${flipX})`;
+        bird.style.transform = `rotate(${angle}deg)`;
         
         bird.classList.add('flying');
         bird.style.top = `${targetTop}px`;
@@ -857,6 +865,7 @@
         
         setTimeout(() => {
           bird.classList.remove('flying');
+          bird.style.transform = `rotate(0deg)`; // level out after landing
         }, 1200);
       }
     });
