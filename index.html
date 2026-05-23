@@ -51,6 +51,7 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
+      overflow-x: hidden;
     }
     
     h1, h2, h3, .eyebrow {
@@ -261,10 +262,38 @@
 
     section {
       padding: 86px 0;
+      border-top: 1px solid rgba(255,255,255,0.03);
+      position: relative;
+    }
+    
+    .no-border {
+      border-top: none;
     }
 
-    .section-dark {
-      background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 20%, var(--bg-2) 80%, var(--bg) 100%);
+    .glow-wine::before {
+      content: "";
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(82, 15, 67, 0.25) 0%, transparent 60%);
+      top: 50%;
+      left: -300px;
+      transform: translateY(-50%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .glow-gold::before {
+      content: "";
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(246, 161, 4, 0.12) 0%, transparent 60%);
+      top: 50%;
+      right: -250px;
+      transform: translateY(-50%);
+      z-index: -1;
+      pointer-events: none;
     }
 
     .section-header {
@@ -559,7 +588,7 @@
     </div>
   </header>
 
-  <section>
+  <section class="no-border glow-gold">
     <div class="container">
       <div class="section-header fade-in">
         <p class="eyebrow">A proposta</p>
@@ -591,7 +620,7 @@
     </div>
   </section>
 
-  <section class="section-dark">
+  <section class="glow-wine">
     <div class="container split">
       <div class="fade-in">
         <p class="eyebrow">Benefícios</p>
@@ -613,7 +642,7 @@
   </section>
 
   <!-- Social Proof Section -->
-  <section>
+  <section class="glow-gold">
     <div class="container">
       <div class="section-header center fade-in">
         <p class="eyebrow">A Comunidade</p>
@@ -637,7 +666,7 @@
     </div>
   </section>
 
-  <section class="section-dark">
+  <section class="glow-wine">
     <div class="container">
       <div class="section-header center fade-in">
         <p class="eyebrow">Como funciona</p>
@@ -667,7 +696,7 @@
   </section>
 
   <!-- FAQ Section -->
-  <section>
+  <section class="glow-gold">
     <div class="container faq-container">
       <div class="section-header center fade-in">
         <p class="eyebrow">Dúvidas?</p>
