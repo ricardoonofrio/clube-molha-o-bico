@@ -262,12 +262,22 @@
 
     section {
       padding: 86px 0;
-      border-top: 1px solid rgba(255,255,255,0.03);
       position: relative;
     }
+
+    section::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(800px, 80%);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(246, 161, 4, 0.5), transparent);
+    }
     
-    .no-border {
-      border-top: none;
+    .no-border::after {
+      display: none;
     }
 
     .glow-wine::before {
